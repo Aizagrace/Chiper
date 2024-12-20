@@ -17,6 +17,24 @@ class NewChirp extends Notification
         //
     }
 
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  object  $notifiable
+     * @return array
+     */
+    public function via(object $notifiable): array
+    {
+        // Specify the channels: 'mail', 'database', or both
+        return ['mail', 'database']; // Add or remove channels as needed
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  object  $notifiable
+     * @return MailMessage
+     */
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
@@ -29,10 +47,18 @@ class NewChirp extends Notification
             ->line('Thank you for using our application!');
     }
 
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  object  $notifiable
+     * @return array
+     */
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'chirp_id' => $this->chirp->id,
+            'chirp_message' => $this->chirp->message,
+            'chirp_user' => $this->chirp->user->name,
         ];
     }
 }
